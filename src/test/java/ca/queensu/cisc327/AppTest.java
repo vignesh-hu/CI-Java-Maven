@@ -22,7 +22,7 @@ public class AppTest {
         runAndTest(Arrays.asList("login"), //
                 Arrays.asList("123456"), //
                 Arrays.asList("123456", "writing transactions!"), //
-                Arrays.asList("hmm i am a transaction."));
+                Arrays.asList("hmm i am a transaction."))
     }
 
     /**
