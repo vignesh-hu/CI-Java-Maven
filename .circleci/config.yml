@@ -1,15 +1,14 @@
 version: 2.1
 
 orbs:
-  maven  : circleci/maven@0.0.12
+#  maven  : circleci/maven@0.0.12
   aws-ecr: circleci/aws-ecr@6.2.0
   aws-ecs: circleci/aws-ecs@0.0.11
 
 workflows:
 # Log into AWS, build and push image to Amazon ECR
-  maven_build_and_push_image:
+  build_and_push_image:
     jobs:
-      - maven/test
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY_ID
@@ -18,15 +17,15 @@ workflows:
           # Name of dockerfile to use. Defaults to Dockerfile.
           dockerfile: Dockerfile
           # AWS_REGION_ENV_VAR_NAME
-          region: us-east-1
+          region: AWS_DEFAULT_REGION
           # myECRRepository
           repo: '${MY_APP_PREFIX}'
           # myECRRepoTag
           tag: "$CIRCLE_SHA1"
       - aws-ecs/deploy-service-update:
           requires:
-            - maven-ecr/build-and-push-image
-          aws-region: us-east-1
+            - aws-ecr/build-and-push-image
+          aws-region: AWS_DEFAULT_REGION
           family: '${MY_APP_PREFIX}-service'
           cluster-name: '${MY_APP_PREFIX}-cluster'
           container-image-name-updates: 'container=${MY_APP_PREFIX}-service,tag=${CIRCLE_SHA1}'
