@@ -29,7 +29,7 @@ ENV LAUNCH_JBOSS_IN_BACKGROUND true
 #RUN yum install epel-release -y
 #RUN yum install jq -y
 
-ARG APP_FILE=tmp/samplewebapp.war
+ARG APP_FILE=target/*.war
 # Add your application to the deployment folder
 ADD ${APP_FILE} /opt/connectleader/wildfly/standalone/deployments/${APP_FILE}
 
